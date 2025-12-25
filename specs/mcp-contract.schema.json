@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sheetwise.dev/schemas/mcp-contract.schema.json",
+  "title": "MCPContract",
+  "description": "Formal schema defining the allowed structure of AI outputs in Sheetwise via the MCP boundary.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["suggested_model"],
+
+  "properties": {
+    "suggested_model": {
+      "$ref": "./analytics-model.schema.json",
+      "description": "AI-suggested analytics model. This is advisory only and must be validated by the Sheetwise Core."
+    },
+
+    "notes": {
+      "type": "array",
+      "description": "Optional explanatory notes or detected ambiguities provided by the AI.",
+      "items": {
+        "type": "string"
+      }
+    },
+
+    "questions": {
+      "type": "array",
+      "description": "Optional clarifying questions when intent is incomplete or ambiguous.",
+      "items": {
+        "type": "string"
+      }
+    },
+
+    "confidence": {
+      "type": "string",
+      "description": "Self-reported confidence level of the AI suggestion. This does not imply correctness.",
+      "enum": ["low", "medium", "high"]
+    }
+  }
+}
