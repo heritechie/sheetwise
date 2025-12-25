@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sheetwise.dev/schemas/analytics-model.schema.json",
+  "title": "AnalyticsModel",
+  "description": "Formal schema for the Sheetwise analytics model. This schema defines the explicit, deterministic structure required to prepare BI-ready datasets.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["time", "metrics"],
+
+  "properties": {
+    "time": {
+      "type": "object",
+      "description": "Defines how records are grouped over time.",
+      "additionalProperties": false,
+      "required": ["field", "grain"],
+      "properties": {
+        "field": {
+          "type": "string",
+          "description": "Source field representing a point in time."
+        },
+        "grain": {
+          "type": "string",
+          "description": "Fixed calendar-based time granularity.",
+          "enum": ["day", "week", "month"]
+        }
+      }
+    },
+
+    "metrics": {
+      "type": "array",
+      "description": "List of metrics to be calculated.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "function"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Stable, human-readable metric name."
+          },
+          "function": {
+            "type": "string",
+            "description": "Aggregation function.",
+            "enum": ["count", "sum", "avg", "min", "max"]
+          },
+          "field": {
+            "type": "string",
+            "description": "Target field for aggregation. Optional for functions like count."
+          }
+        }
+      }
+    },
+
+    "dimensions": {
+      "type": "array",
+      "description": "Categorical fields used for grouping.",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+
+    "warnings": {
+      "type": "array",
+      "description": "Non-blocking validation warnings.",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
